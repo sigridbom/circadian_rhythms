@@ -9,7 +9,7 @@ date: '2022-11-21'
 ### Install missing packages
 ```{r packages}
 install.packages('pacman') 
-pacman::p_load(lmerTest, tidyverse, lme4, wesanderson)
+pacman::p_load(lmerTest, tidyverse, lme4, wesanderson, MuMIn)
 ```
 
 #Get and clean BodyFeelingExp data
@@ -234,7 +234,7 @@ u2= cos(2*pi*cf*t+phi)
 plot(x=t,y=u, type='l',col='darkblue',xlab='time(hours)',ylab='Amplitude')
 text(x=1+t[1000],y=-0.2+u[500],labels='y=sin(2*pi*cf*t)',col='darkblue')
 lines(x=t,y=u2, type='l',lty='dashed',col='darkblue')
-text(x=-1+t[500],y=0.2+u2[500],labels='Y=sin(2*pi*cf*t+phi)',col='darkblue')
+text(x=-1+t[500],y=0.2+u2[500],labels='Y=cos(2*pi*cf*t+phi)',col='darkblue')
 ```
 Using the trigonometric identity
 
@@ -478,8 +478,12 @@ dataBFE %>%
 
 
 ```{r}
-par(mfrow=c(2,2)) # init 4 charts in 1 panel
-plot(modelBFEfreshCircBoth)
+# calculate R-squared
+library('MuMIn')
+
+r.squaredGLMM(modelBFEfreshCircBoth)
+# marginal Rsq = 0.2429
+# conditional Rsq = 0.3827
 ```
 
 #### Mood
@@ -525,17 +529,6 @@ anova(modelBFEHeartRateCirc,modelBFEHeartRateCircBoth)
 
 #effect(modelBFEHeartRateCirc)
 ```
-
-```{r}
-plot(modelBFEfreshCirc)
-qqnorm(m_temp$coefficients)
-plot(m_temp$coefficients)
-
-dataBFE %>% 
-  ggplot() + 
-  aes(fresh, sinCirc) + geom_smooth(method = "lm")
-```
-
 
 ### Activity and Mental activity
 ```{r}
