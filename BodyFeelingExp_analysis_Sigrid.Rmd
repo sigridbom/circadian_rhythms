@@ -69,10 +69,8 @@ dataBFE$hour2<-dataBFE$hour+(dataBFE$minute)/60
 
 ## Sigrid's preprocessing
 
-
 ```{r}
 # getting info about dataset
-
 # number of participants
 length(unique(dataBFE$id)) # 35 unique entries
 
@@ -91,7 +89,6 @@ for (i in unique(dataBFE$id)) {
 }
 
 # some of the ids are definitely made by mistake 
-
 ```
 
 ```{r}
@@ -108,9 +105,7 @@ dataBFE <- dataBFE %>%
     id = gsub("www12", "www11", id)
   )
 
-# NB!! 
-# rerun for loop in above chunk to make an updated boxplot below 
-
+# NB! rerun for loop in above chunk to make an updated boxplot below 
 ```
 
 
