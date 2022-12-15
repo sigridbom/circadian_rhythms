@@ -301,9 +301,9 @@ dataBFE$freshCircFit<-m_temp$coefficients[1,1]+m_temp$coefficients[2,1]*dataBFE$
 plot(x=dataBFE$hour2,y=dataBFE$freshCircFit,type='p',col=wes_palette("Royal2")[5])
 
 # testing colours for plotting
-wes_palette("Royal2")
-wes_palette("Royal1") # [2] er rød
-wes_palette("Royal2") # [5] er grøn
+#wes_palette("Royal2")
+#wes_palette("Royal1") # [2] er rød
+#wes_palette("Royal2") # [5] er grøn
 
 # plot 24 hour rhythm
 dataBFE %>% 
@@ -413,9 +413,6 @@ dataBFE %>%
 
 
 ```
-```{r}
-#ggsave("fig2.png")
-```
 
 
 #### Mood
@@ -482,9 +479,6 @@ dataBFE %>%
       legend.position = c(.80, .25)
     ) 
 
-```
-```{r}
-ggsave("fig3.png")
 ```
 
 
