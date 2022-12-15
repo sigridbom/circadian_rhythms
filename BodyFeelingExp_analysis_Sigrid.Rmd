@@ -598,7 +598,7 @@ max(df_final$age) # 49
 
 ```{r}
 # figuring out the start and end data of the experiment by manipulating the Time column
-dataBFE$Time
+#dataBFE$Time
 
 dataBFE <- dataBFE %>% 
   mutate(
