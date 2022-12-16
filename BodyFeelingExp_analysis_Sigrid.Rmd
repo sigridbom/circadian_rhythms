@@ -324,33 +324,6 @@ dataBFE %>%
     ) 
 ```
 
-#### Mood
-```{r}
-library(lmerTest)
-# Mood: Simple oscillation model
-modelBFEmoodCirc<-lmer(mood~sinCirc+cosCirc+(1|id),data=dataBFE)
-m_temp<-summary(modelBFEmoodCirc)
-m_temp
-dataBFE$CircFit<-m_temp$coefficients[2,1]*dataBFE$sinCirc+m_temp$coefficients[3,1]*dataBFE$cosCirc
-
-plot(x=dataBFE$hour2,y=dataBFE$CircFit,type='p',col='darkgreen')
-
-ggplot(dataBFE,aes(x=hour2,y=mood))+geom_smooth()+geom_line(aes(x=hour2,y=CircFit+mean(mood)),col='darkgreen')+labs(x='Time of day (hours)', y='Negative/Positive Mood')
-```
-
-#### HeartRate
-```{r}
-# Freshness: Simple oscillation model
-modelBFEHeartRateCirc<-lmer(HeartRate~sinCirc+cosCirc+(1|id),data=dataBFE)
-m_temp<-summary(modelBFEHeartRateCirc)
-m_temp
-dataBFE$HeartRateCircFit<-m_temp$coefficients[1,1]+m_temp$coefficients[2,1]*dataBFE$sinCirc+m_temp$coefficients[3,1]*dataBFE$cosCirc
-
-plot(x=dataBFE$hour2,y=dataBFE$HeartRateCircFit,type='p',col='darkgreen')
-
-ggplot(dataBFE,aes(x=hour2,y=HeartRate))+geom_smooth()+geom_line(aes(x=hour2,y=HeartRateCircFit),col='darkgreen')+labs(x='Time of day (hours)', y='Tired/Fresh')
-```
-
 
 #### Make a 12 hour oscillation model to compare with the 24 hour model
 
@@ -410,32 +383,6 @@ dataBFE %>%
 ```
 
 
-#### Mood
-```{r}
-library(lmerTest)
-# Mood: Simple oscillation model
-modelBFEmoodCirc12<-lmer(mood~sinCirc12+cosCirc12+(1|id),data=dataBFE)
-m_temp<-summary(modelBFEmoodCirc12)
-m_temp
-dataBFE$CircFit12<-m_temp$coefficients[1,1]+m_temp$coefficients[2,1]*dataBFE$sinCirc12+m_temp$coefficients[3,1]*dataBFE$cosCirc12
-
-plot(x=dataBFE$hour2,y=dataBFE$CircFit12,type='p',col='darkgreen')
-
-ggplot(dataBFE,aes(x=hour2,y=mood))+geom_smooth()+geom_line(aes(x=hour2,y=CircFit12),col='darkgreen')+labs(x='Time of day (hours)', y='Negative/Positive Mood')
-```
-
-#### HeartRate
-```{r}
-# Freshness: Simple oscillation model
-modelBFEHeartRateCirc12<-lmer(HeartRate~sinCirc12+cosCirc12+(1|id),data=dataBFE)
-m_temp<-summary(modelBFEHeartRateCirc12)
-m_temp
-dataBFE$HeartRateCircFit12<-m_temp$coefficients[1,1]+m_temp$coefficients[2,1]*dataBFE$sinCirc12+m_temp$coefficients[3,1]*dataBFE$cosCirc12
-
-plot(x=dataBFE$hour2,y=dataBFE$HeartRateCircFit12,type='p',col='darkgreen')
-
-ggplot(dataBFE,aes(x=hour2,y=HeartRate))+geom_smooth()+geom_line(aes(x=hour2,y=HeartRateCircFit12),col='darkgreen')+labs(x='Time of day (hours)', y='Tired/Fresh')
-```
 ## Combining 12 and 24 hours
 
 #### Freshness
@@ -486,32 +433,6 @@ r.squaredGLMM(modelBFEfreshCircBoth)
 # conditional Rsq = 0.3827
 ```
 
-#### Mood
-```{r}
-library(lmerTest)
-# Mood: Simple oscillation model
-modelBFEmoodCircBoth<-lmer(mood~sinCirc+cosCirc+sinCirc12+cosCirc12+(1|id),data=dataBFE)
-m_temp<-summary(modelBFEmoodCircBoth)
-m_temp
-dataBFE$CircFitBoth<-m_temp$coefficients[1,1]+m_temp$coefficients[2,1]*dataBFE$sinCirc+m_temp$coefficients[3,1]*dataBFE$cosCirc+m_temp$coefficients[4,1]*dataBFE$sinCirc12+m_temp$coefficients[5,1]*dataBFE$cosCirc12
-
-plot(x=dataBFE$hour2,y=dataBFE$CircFitBoth,type='p',col='darkgreen')
-
-ggplot(dataBFE,aes(x=hour2,y=mood))+geom_smooth()+geom_line(aes(x=hour2,y=CircFitBoth),col='darkgreen')+labs(x='Time of day (hours)', y='Negative/Positive Mood')
-```
-#### HeartRate
-```{r}
-# Freshness: Simple oscillation model
-modelBFEHeartRateCircBoth<-lmer(HeartRate~+sinCirc+cosCirc+sinCirc12+cosCirc12+(1|id),data=dataBFE)
-m_temp<-summary(modelBFEHeartRateCircBoth)
-m_temp
-dataBFE$HeartRateCircFitBoth<-m_temp$coefficients[1,1]+m_temp$coefficients[2,1]*dataBFE$sinCirc+m_temp$coefficients[3,1]*dataBFE$cosCirc++m_temp$coefficients[4,1]*dataBFE$sinCirc12+m_temp$coefficients[5,1]*dataBFE$cosCirc12
-
-plot(x=dataBFE$hour2,y=dataBFE$HeartRateCircFitBoth,type='p',col='darkgreen')
-
-ggplot(dataBFE,aes(x=hour2,y=HeartRate))+geom_smooth()+geom_line(aes(x=hour2,y=HeartRateCircFitBoth),col='darkgreen')+labs(x='Time of day (hours)', y='HeartRate')
-```
-
 ## Model comparisons
 ### Is the 24 hour or the 12 hour model the best?
 ```{r}
@@ -519,56 +440,10 @@ ggplot(dataBFE,aes(x=hour2,y=HeartRate))+geom_smooth()+geom_line(aes(x=hour2,y=H
 anova(modelBFEfreshCirc12,  modelBFEfreshCircBoth)
 anova(modelBFEfreshCirc, modelBFEfreshCircBoth)
 
-#Comparing models for mood
-anova(modelBFEmoodCirc12, modelBFEmoodCircBoth)
-anova(modelBFEmoodCirc, modelBFEmoodCircBoth)
-
-#Comparing models for heartrate
-anova(modelBFEHeartRateCirc12,modelBFEHeartRateCircBoth)
-anova(modelBFEHeartRateCirc,modelBFEHeartRateCircBoth)
-
-#effect(modelBFEHeartRateCirc)
-```
-
-### Activity and Mental activity
-```{r}
-
-library(ggplot2)
-ggplot(dataBFE,aes(x=MentalActivity))+geom_bar()
-ggplot(dataBFE,aes(x=Activity))+geom_bar()+coord_flip()
-
-#Mood as function of Mental activity
-modelBFEmoodMentalAct<-lmer(mood~MentalActivity + (1|id),data=dataBFE)
-anova(modelBFEmoodMentalAct)
-
-#Mood as function of activity
-modelBFEmoodAct<-lmer(mood~Activity + (1|id),data=dataBFE)
-anova(modelBFEmoodAct)
-```
-
-### Mood by month
-```{r}
-library(ggplot2)
-ggplot(dataBFE,aes(y=mood, x=as.factor(month)))+geom_boxplot()
-```
-
-
-### Mood by hunger level
-```{r}
-model_mood_hunger <- lmer(mood ~ hunger+(1|id),data=dataBFE)
-m_temp <- summary(model_mood_hunger)
-m_temp
-
-dataBFE %>% 
-  ggplot() +
-  aes(x=hour2, y=mood) + 
-  geom_smooth() + 
-  geom_smooth(aes(hour2, hunger), col = 'darkgreen') + 
-  coord_cartesian(y = c(0,100))+geom_line(aes(x=hour2,y=HeartRateCircFitBoth),col='darkgreen')+labs(x='Time of day (hours)', y='HeartRate')
 ```
 
 ```{r}
-# Demographics 
+# Getting more info about participants
 df_final <- data.frame()
 
 for (i in unique(dataBFE$id)) {
@@ -598,7 +473,8 @@ max(df_final$age) # 49
 
 ```{r}
 # figuring out the start and end data of the experiment by manipulating the Time column
-#dataBFE$Time
+
+#dataBFE$Time # commented out because the output is very long
 
 dataBFE <- dataBFE %>% 
   mutate(
@@ -608,4 +484,3 @@ dataBFE <- dataBFE %>%
 # end data Nov 21 
 # = 2 months and 13 days 
 ```
-
